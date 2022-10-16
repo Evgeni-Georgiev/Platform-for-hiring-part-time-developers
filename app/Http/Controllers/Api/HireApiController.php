@@ -19,7 +19,7 @@ class HireApiController extends Controller
      */
     public function index()
     {
-        return HireResource::collection(HireService::getHire());
+        return HireResource::collection(Hire::all());
     }
 
     /**
