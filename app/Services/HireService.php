@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\DeveloperRequest;
@@ -7,24 +8,16 @@ use App\Models\Developer;
 use App\Models\Hire;
 use Illuminate\Http\Request;
 
-class HireService{
-
-
-    /**
-     * Return all exising developers.
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function getHire(): \Illuminate\Database\Eloquent\Collection
-    {
-        return Hire::all();
-    }
+class HireService
+{
 
     /**
      * Hire existing developer(s) from a list without dates overlap
      * @param HireRequest $request - Obtain the client HTTP request.
-//     * @return void
+     * @return void
      */
-    public static function storeHire(HireRequest $request) {
+    public function storeHire(HireRequest $request)
+    {
         // Select all from developer where name = names from hire_developers
         $hire_devs_by_names = Developer::where('name', $request->names)->get();
 
@@ -38,9 +31,10 @@ class HireService{
             $select_hired_developers_by_names =
                 Hire::select('*')
                     ->where('names', '=', $single_developer)
-                    ->where(function ($query) use ($request) { $query->whereBetween('start_date', [$request->start_date, $request->end_date])->orWhereBetween('end_date', [$request->start_date, $request->end_date]); })
+                    ->where(function ($query) use ($request) {
+                        $query->whereBetween('start_date', [$request->start_date, $request->end_date])->orWhereBetween('end_date', [$request->start_date, $request->end_date]);
+                    })
                     ->first();
-//            $check_rows = $developer_for_hire_from_db_select;
             $store_hired_developers_by_names[] = $select_hired_developers_by_names;
 
             if ($select_hired_developers_by_names) {
@@ -63,35 +57,12 @@ class HireService{
             }
             // Loop all the collected/selected in array developers and hire simultaneously.
             foreach ($collected_developers as $single_collected_developer) {
-                foreach($hire_devs_by_names as $dev) {
+                foreach ($hire_devs_by_names as $dev) {
                     Hire::insert(
                         ["names" => $single_collected_developer, "developer_id" => $dev->id, "start_date" => $request->start_date, "end_date" => $request->end_date]
                     );
                 }
             }
-        }
-    }
-
-    /**
-     * @param $id - Accessing id route for determining which developer was updated.
-     * @return void
-     */
-    public static function deleteHire($id) {
-        $delete_dev = Hire::findOrFail($id);
-        $delete_dev->delete();
-    }
-
-    /**
-     * When an existing developer which is hired gets edited, the changes take place also in the hire_developers table records.
-     * @param DeveloperRequest $request - Obtain an instance by injecting custom request class.
-     * @param $id - Accessing id route for determining which developer was updated.
-     * @return void
-     */
-    public static function updateHires(DeveloperRequest $request, $id) {
-        $hire = Hire::where('developer_id', $id)->get();
-        foreach($hire as $single_hire) {
-            $single_hire->names = $request->get('name', 'No Data');
-            $single_hire->save();
         }
     }
 
