@@ -43,10 +43,10 @@ class HireController extends Controller
     public function create()
     {
         // Undefined variable: $hire_devs -- Solution: create and store/get and post -- need to the the same routes (/hire)
-        $hired_developers = Developer::select('*')
+        $hiredDevelopersData = Developer::select('*')
                         ->join('hire_developers', 'developers.name', '=', 'hire_developers.names')
                         ->get();
-        return view('hire', ['list_developers_for_hire' => Developer::all(), 'hired_developers' => $hired_developers]);
+        return view('hire', ['getDevelopers' => Developer::all(), 'hiredDevelopersData' => $hiredDevelopersData]);
     }
 
     /**

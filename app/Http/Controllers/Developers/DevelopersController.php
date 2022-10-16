@@ -55,8 +55,8 @@ class DevelopersController extends Controller
      */
     public function developerProfile($id): View
     {
-        $get_dev_profile = $this->devModel->find($id);
-        return view('profile', compact('get_dev_profile'))->with('success', 'Developer is successfully saved');
+        $getDeveloperProfileById = $this->devModel->findOrFail($id);
+        return view('profile', compact('getDeveloperProfileById'))->with('success', 'Developer is successfully saved');
     }
 
     /**
@@ -67,8 +67,8 @@ class DevelopersController extends Controller
      */
     public function edit($id): View
     {
-        $developers = $this->devModel->findOrFail($id);
-        return view('edit', compact('developers'));
+        $getDeveloperByIdForEdit = $this->devModel->findOrFail($id);
+        return view('edit', compact('getDeveloperByIdForEdit'));
 
     }
 
