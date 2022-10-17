@@ -8,18 +8,6 @@ use Tests\TestCase;
 
 class DeveloperTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-
-
-    public function test_example()
-    {
-        $this->assertTrue(true);
-    }
-
 //    public function test_if_seeders_works() {
 //        $this->seed(); // seed all seeders in the seeders folder
 //        // Similar:: php artisan db:seed
@@ -27,13 +15,15 @@ class DeveloperTest extends TestCase
 //        $this->assertTrue(true);
 //    }
 
-    public function test_get_developers() {
+    public function test_get_developers()
+    {
         $response = $this->call('GET', '/developers');
         $response->assertStatus(200);
     }
 
     // HTTP testing
-    public function test_create_new_developer() {
+    public function test_create_new_developer()
+    {
         $response = $this->post('/developers/create_dev', [
             'id' => 1,
             'name' => 'Jane Doe',
@@ -52,7 +42,8 @@ class DeveloperTest extends TestCase
         $response->assertRedirect('/');
     }
 
-    public function test_developer_duplicate() {
+    public function test_developer_duplicate()
+    {
         $developer1 = Developer::create([
             'name' => 'Rinzler',
             'email' => 'rinzler@gmail.com'
@@ -66,52 +57,58 @@ class DeveloperTest extends TestCase
         $this->assertTrue($developer1->name != $developer2->name);
         $this->assertTrue($developer1->email != $developer2->email);
 
-        if( ($developer1->name != $developer2->name) && ($developer1->email != $developer2->email) ) {
+        if (($developer1->name != $developer2->name) && ($developer1->email != $developer2->email)) {
             $developer1->delete();
             $developer2->delete();
         }
     }
 
-    public function test_create_developer() {
-        if(!Developer::where('email', 'janedoe@gmail.com')->exists()) {
-            Developer::factory()->create(['id' => 6, 'name' => "Jane Doe", 'email' =>  "janedoe@gmail.com"]);
+    public function test_create_developer()
+    {
+        if (!Developer::where('email', 'janedoe@gmail.com')->exists()) {
+            Developer::factory()->create(['id' => 6, 'name' => "Jane Doe", 'email' => "janedoe@gmail.com"]);
         } else {
             return;
         }
         $this->assertTrue(true);
     }
 
-    public function test_update_developer() {
+    public function test_update_developer()
+    {
         $developer = Developer::where('name', 'Jane Doe')->first();
-        $response = $this->call('PUT', "/developers/update/{$developer->id}", ['name' => 'Flynn', 'email' =>  "flynn@gmail.com"]);
+        $response = $this->call('PUT', "/developers/update/{$developer->id}", ['name' => 'Flynn', 'email' => "flynn@gmail.com"]);
         $response->assertRedirect('/developers');
     }
 
-    public function test_database() {
+    public function test_database()
+    {
         $this->assertDatabaseHas('developers', [
             'name' => 'Flynn'
         ]);
     }
 
     // API Testing
+
     public function test_get_api_developer()
     {
-        $response = $this->getJson('/api/developers');
-        $response->assertStatus(405);
+        $response = $this->getJson('/api/');
+        $response->assertStatus(200);
     }
 
     public function test_create_api_developer()
     {
-        $developer = Developer::factory()->create([
-            'id' => 2,
-            'name' => 'Quora'
-        ]);
-        $response = $this->postJson('/api/developers', $developer->toArray());
-        $response->assertStatus(422);
-//        $this->assertDatabaseHas('developers', developer);
+        $developer = [
+            "name" => "Quora",
+            "email" => "quora@gmail.com"
+        ];
+        $response = $this->postJson('/api/developers', $developer);
+        $response
+            ->assertStatus(200);
+
     }
 
-    public function test_update_api_developer() {
+    public function test_update_api_developer()
+    {
         $developer = Developer::where('name', 'Quora')->first();
         $update_data = ['name' => 'Quora1'];
         $response = $this->putJson("/api/developers/edit/{$developer->id}", $update_data);
