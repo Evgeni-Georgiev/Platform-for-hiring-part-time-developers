@@ -9,6 +9,8 @@
 
 # About
 
+composer install --no-interaction --no-ansi --ignore-platform-reqs
+
 This is a platform for creating developer profiles and hiring them for a certain peiod of time. The hire can by gorup or single hire. The profiles containg attributes like technology/language that the developer work on, years of experience, price peh hour billing, LinkedIn profile link, small description, etc.
 
 ## Installation
