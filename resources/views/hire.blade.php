@@ -22,7 +22,7 @@
                 <!--Show all existing developers from db in a select field-->
                 <select name="names[]" class="form-control" multiple="multiple"
                         aria-label="multiple select example">
-                    @foreach ($list_developers_for_hire as $row)
+                    @foreach ($getDevelopers as $row)
                         <option value="{{ $row->name }}">{{ $row->name }}</option>
                     @endforeach
                     {{--                @extends('components.hired_dev')--}}
@@ -46,16 +46,16 @@
             <th scope='col'>Delete</th>
         </tr>
         </thead>
-        @foreach($hired_developers as $hired_developer)
+        @foreach($hiredDevelopersData as $hiredDeveloper)
             <tbody>
             <tr>
-                <td> {{ e($hired_developer->names) }} </td>
-                <td><img src="{{ asset('storage/developer/'.$hired_developer->profile_picture) }}"
+                <td> {{ e($hiredDeveloper->names) }} </td>
+                <td><img src="{{ asset('storage/developer/'.$hiredDeveloper->profile_picture) }}"
                          style="height: 100px; width: 150px;" alt="Profile image of the hired developer"></td>
-                <td> {{ $hired_developer->start_date }} </td>
-                <td> {{ $hired_developer->end_date }} </td>
+                <td> {{ $hiredDeveloper->start_date }} </td>
+                <td> {{ $hiredDeveloper->end_date }} </td>
                 <td>
-                    <form action="{{ route('hire.destroy', $hired_developer->id) }}" method="POST">
+                    <form action="{{ route('hire.destroy', $hiredDeveloper->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger">Delete</button>

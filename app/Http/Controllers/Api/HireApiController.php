@@ -19,7 +19,7 @@ class HireApiController extends Controller
      */
     public function index()
     {
-        return HireResource::collection(HireService::getHire());
+        return HireResource::collection(Hire::all());
     }
 
     /**
@@ -46,51 +46,6 @@ class HireApiController extends Controller
             'message' => 'Developer for Hire created successfully',
             'hired_developers' => $hire_dev,
         ]);
-    }
-
-//    /**
-//     * Store a newly created resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @return \Illuminate\Http\JsonResponse
-//     */
-//    public function store()
-//    {
-//
-//    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Hire  $hire
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Hire $hire)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Hire  $hire
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Hire $hire)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Hire  $hire
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Hire $hire)
-    {
-        //
     }
 
     /**
