@@ -1,109 +1,66 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# About
+## About Laravel
 
-This is a platform for creating developer profiles and hiring them for a certain peiod of time. The hire can by gorup or single hire. The profiles containg attributes like technology/language that the developer work on, years of experience, price peh hour billing, LinkedIn profile link, small description, etc.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## Installation
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Clone the repository
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-    git clone https://github.com/Evgeni-Georgiev/Platform-for-hiring-part-time-developers.git
+## Learning Laravel
 
-Switch to the repo folder
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-    cd Platform-for-hiring-part-time-developers
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-Update and install all the dependencies using composer
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-    composer update
+## Laravel Sponsors
 
-    composer install
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-Copy the example env file and make the required configuration changes in the .env file
+### Premium Partners
 
-    cp .env.example .env
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Cubet Techno Labs](https://cubettech.com)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[Many](https://www.many.co.uk)**
+- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
+- **[DevSquad](https://devsquad.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[OP.GG](https://op.gg)**
+- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+- **[Lendio](https://lendio.com)**
 
-Generate a new application key
+## Contributing
 
-    php artisan storage:link
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-and
+## Code of Conduct
 
-    php artisan key:generate
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-Run the database migrations (**Set the database connection in .env before migrating**)
+## Security Vulnerabilities
 
-    php artisan migrate
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-Start the local development server
+## License
 
-    php artisan serve
-
-You can now access the server at http://localhost:8000
-
-**TL;DR command list**
-
-    git clone https://github.com/Evgeni-Georgiev/Platform-for-hiring-part-time-developers.git
-    cd Platform-for-hiring-part-time-developers
-    composer install
-    cp .env.example .env
-    php artisan storage:link
-
-**Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
-
-    php artisan migrate
-    php artisan serve
-
-## Database seeding
-
-Run the database seeder
-
-    php artisan db:seed
-
-**_Note_** : It's recommended to have a clean database before seeding. You can refresh your migrations at any point to clean the database by running the following command
-
-    php artisan migrate:refresh
-
-The api can be accessed at [http://localhost:8000/api](http://localhost:8000/api).
-
----
-
-# Code overview
-
-## Dependencies
-
--   [smknstd/fakerphp-picsum-images](https://packagist.org/packages/smknstd/fakerphp-picsum-images) - For generating fake images
-
-## Environment variables
-
--   `.env` - Environment variables can be set in this file
-
-**_Note_** : You can quickly set the database information and other variables in this file and have the application fully working.
-
----
-
-# Testing API
-
-The application has a simple REST API
-
-Run the laravel development server
-
-    php artisan serve
-
-The api can be accessed at
-
-    http://localhost:8000/api
-
-# Performing Unit tests
-
-Unit tests were made for testing the functionalities of the application.
-
-    php artisan test
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

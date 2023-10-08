@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Requests\DeveloperRequest;
-use App\Services\DeveloperService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Developer extends Model
 {
@@ -26,30 +23,6 @@ class Developer extends Model
         "native_language",
         "linkedin_profile_link",
     ];
-
-    public function createDeveloper(DeveloperRequest $request) {
-        Developer::create(array_merge($request->validated(), [
-            'profile_picture' => DeveloperService::handleUploadedImage($request, 'profile_picture')
-        ]));
-    }
-
-    public function updateDeveloper(DeveloperRequest $request, $id) {
-        $developer = Developer::find($id);
-
-        if($request->hasFile('profile_picture')){
-            $developer->update(array_merge($request->validated(), [ 'profile_picture' => DeveloperService::handleUploadedImage($request, 'profile_picture') ]));
-        } else {
-            $developer->update($request->except('profile_picture'));
-        }
-        // When developer is updated, it's record(s) also take the corresponding changes in the 'hire_developers' table.
-        Hire::updateHires($request, $id);
-    }
-
-    public static function deleteDeveloper($id) {
-        $developer = Developer::find($id);
-        Storage::disk('public')->delete('developer/'.$developer->profile_picture);
-        $developer->delete();
-    }
 
     /**
      * Mutator function for Name of Developer.

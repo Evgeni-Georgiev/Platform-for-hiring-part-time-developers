@@ -5,17 +5,13 @@ namespace App\Http\Controllers\Developers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeveloperRequest;
 use App\Models\Developer;
+use App\Models\Hire;
+use App\Services\DeveloperService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class DevelopersController extends Controller
 {
-    private Developer $devModel;
-
-    public function __construct(Developer $devModel) {
-        $this->devModel = $devModel;
-    }
-
     /**
      * Display a listing of al developers.
      *
@@ -23,7 +19,8 @@ class DevelopersController extends Controller
      */
     public function index(): View
     {
-        return view('developers', ['developer' => Developer::all()]);
+        $developer = DeveloperService::getDeveloper();
+        return view('developers', compact('developer'));
     }
 
     /**
@@ -44,7 +41,7 @@ class DevelopersController extends Controller
      */
     public function store(DeveloperRequest $request): RedirectResponse
     {
-        $this->devModel->createDeveloper($request);
+        DeveloperService::createDeveloper($request);
         return redirect('/developers')->with('success', 'Developer is successfully saved');
     }
 
@@ -55,8 +52,8 @@ class DevelopersController extends Controller
      */
     public function developerProfile($id): View
     {
-        $getDeveloperProfileById = $this->devModel->findOrFail($id);
-        return view('profile', compact('getDeveloperProfileById'))->with('success', 'Developer is successfully saved');
+        $get_dev_profile = Developer::find($id);
+        return view('profile', compact('get_dev_profile'))->with('success', 'Developer is successfully saved');
     }
 
     /**
@@ -67,8 +64,8 @@ class DevelopersController extends Controller
      */
     public function edit($id): View
     {
-        $getDeveloperByIdForEdit = $this->devModel->findOrFail($id);
-        return view('edit', compact('getDeveloperByIdForEdit'));
+        $developers = Developer::findOrFail($id);
+        return view('edit', compact('developers'));
 
     }
 
@@ -81,7 +78,7 @@ class DevelopersController extends Controller
      */
     public function update(DeveloperRequest $request, $id): RedirectResponse
     {
-        $this->devModel->updateDeveloper($request, $id);
+        DeveloperService::updateDeveloper($request, $id);
         return redirect('/developers')->with('success', 'Developer Data is successfully updated');
     }
 
@@ -93,7 +90,7 @@ class DevelopersController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        $this->devModel->deleteDeveloper($id);
+        DeveloperService::deleteDeveloper($id);
         return redirect('/developers')->with('success', 'Developer Data is successfully deleted');
     }
 }

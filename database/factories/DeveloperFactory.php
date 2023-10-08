@@ -9,7 +9,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * @extends Factory<Developer>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Developer>
  */
 class DeveloperFactory extends Factory
 {
@@ -24,22 +24,18 @@ class DeveloperFactory extends Factory
     public function definition()
     {
 
-//        $filepath = '/storage/developer';
-//        $filepath = storage_path('app/public/developer');
+        $filepath = '/storage/developer';
 //        $filepath = '/';
-
-//        $image = $this->faker->image();
-//        $imageFile = new File($image);
-
+        $image = $this->faker->image();
+        $imageFile = new File($image);
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->numerify('##########'),
             'location' => fake()->word(),
-//            'profile_picture' => $this->faker->image(storage_path('app/public/developer'), 360, 480, 'animals', false),
+//            'profile_picture' => $this->faker->image($filepath, 360, 480, 'animals', false),
 //            'profile_picture' => Storage::disk('public')->putFile('developer', $imageFile),
-//            'profile_picture' => str_replace('developer/', '', Storage::disk('public')->putFile('developer', $imageFile)),
-//            'profile_picture' => Storage::putFile('public/developer', $imageFile),
+            'profile_picture' => str_replace('developer/', '', Storage::disk('public')->putFile('developer', $imageFile)),
             'price_per_hour' => fake()->numberBetween(20, 100),
             'technology' => fake()->randomElement(["JavaScript", "Java", ".NET", "Flutter", "Python", "PHP"]),
             'description' => fake()->text(),

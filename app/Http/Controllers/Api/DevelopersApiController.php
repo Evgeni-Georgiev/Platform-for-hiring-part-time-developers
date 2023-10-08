@@ -11,13 +11,6 @@ use Illuminate\Http\Request;
 
 class DevelopersApiController extends Controller
 {
-
-    private Developer $devModel;
-
-    public function __construct(Developer $devModel) {
-        $this->devModel = $devModel;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +18,7 @@ class DevelopersApiController extends Controller
      */
     public function index()
     {
-        return DeveloperResource::collection(Developer::all());
+        return DeveloperResource::collection(DeveloperService::getDeveloper());
     }
 
     /**
@@ -35,13 +28,52 @@ class DevelopersApiController extends Controller
      */
     public function create(DeveloperRequest $request)
     {
-        $this->devModel->createDeveloper($request);
+        DeveloperService::createDeveloper($request->validated());
 
         return response()->json([
             'status' => 'success',
             'message' => 'Developer created successfully',
             'developer' => $request->validated(),
         ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(DeveloperRequest $request)
+    {
+        DeveloperService::createDeveloper($request->validated());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Developer created successfully',
+            'developer' => $request->validated(),
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Developer  $developer
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Developer $developer)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Developer  $developer
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Developer $developer)
+    {
+        //
     }
 
     /**
@@ -54,7 +86,7 @@ class DevelopersApiController extends Controller
     public function update(DeveloperRequest $request, $id)
     {
 //        $dev = $developer->update($request->validated());
-        $this->devModel->updateDeveloper($request, $id);
+        DeveloperService::updateDeveloper($request, $id);
 
         return response()->json([
             'status' => 'success',

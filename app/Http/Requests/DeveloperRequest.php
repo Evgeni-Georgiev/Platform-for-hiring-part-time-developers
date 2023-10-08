@@ -33,9 +33,9 @@ class DeveloperRequest extends FormRequest
             case 'POST':
             {
                 return [
-                    'name' => 'required|string',
+                    'name' => 'required|string|min:5|max:255',
                     'email' => 'required',
-                    'phone' => 'nullable|numeric',
+                    'phone' => 'nullable|numeric|digits:10',
                     'location' => 'nullable',
                     'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
                     'price_per_hour' => 'nullable|integer|min:1|max:100',
@@ -50,9 +50,9 @@ class DeveloperRequest extends FormRequest
             case 'PATCH':
             {
                 return [
-                    'name' => 'nullable|string',
+                    'name' => 'nullable|string|min:5|max:255',
                     'email' => 'nullable|unique:developers,email,'.$this->id,
-                    'phone' => 'nullable|numeric',
+                    'phone' => 'nullable|numeric|digits:10',
                     'location' => 'nullable',
                     'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
                     'price_per_hour' => 'nullable|integer|min:1|max:100',

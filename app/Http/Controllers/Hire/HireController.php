@@ -7,7 +7,6 @@ use App\Http\Requests\HireRequest;
 use App\Models\Developer;
 use App\Models\Hire;
 use App\Services\HireService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,15 +14,6 @@ use Illuminate\Validation\Rule;
 
 class HireController extends Controller
 {
-
-    private Hire $hireModel;
-    private HireService $hireService;
-
-    public function __construct(Hire $hireModel, HireService $hireService) {
-        $this->hireModel = $hireModel;
-        $this->hireService = $hireService;
-    }
-
     /**
      * Display a listing of the hired developer resources.
      *
@@ -36,17 +26,17 @@ class HireController extends Controller
 
     /**
      * Show the form for hiring new developer(s).
-     * Render a list of already hired developers and its statuses
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
         // Undefined variable: $hire_devs -- Solution: create and store/get and post -- need to the the same routes (/hire)
-        $hiredDevelopersData = Developer::select('*')
+        $list_developers_for_hire = Developer::all();
+        $hired_developers = Developer::select('*')
                         ->join('hire_developers', 'developers.name', '=', 'hire_developers.names')
                         ->get();
-        return view('hire', ['getDevelopers' => Developer::all(), 'hiredDevelopersData' => $hiredDevelopersData]);
+        return view('hire', compact('list_developers_for_hire', 'hired_developers'));
     }
 
     /**
@@ -57,8 +47,42 @@ class HireController extends Controller
      */
     public function store(HireRequest $request)
     {
-        $this->hireService->storeHire($request);
-        return redirect('/hire')->with("Data stored successfully!");
+        HireService::storeHire($request);
+        return redirect('/hire')->with("sdasdsa");
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Hire  $hire
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Hire $hire)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Hire  $hire
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Hire $hire)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Hire  $hire
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Hire $hire)
+    {
+        //
     }
 
     /**
@@ -69,7 +93,7 @@ class HireController extends Controller
      */
     public function destroy($id)
     {
-        $this->hireModel->deleteHire($id);
+        HireService::deleteHire($id);
         return redirect('/hire')->with('success', 'Dev Data is successfully deleted');
     }
 }
