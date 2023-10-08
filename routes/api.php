@@ -22,13 +22,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Developers'], function() {
 
-    Route::get('/', [DevelopersApiController::class, 'index']);
+    Route::get('/developer', [DevelopersApiController::class, 'index']);
 
-    Route::post('/developers', [DevelopersApiController::class, 'create']);
+    Route::get('/developer/{id}', [DevelopersApiController::class, 'show'])->name('api.v1.developer.show');
 
-    Route::put('/developers/edit/{developer}', [DevelopersApiController::class, 'update']);
+    Route::post('/developer', [DevelopersApiController::class, 'store']);
 
-    Route::delete('/developers/delete/{developer}', [DevelopersApiController::class, 'destroy']);
+    Route::put('/developer/{id}', [DevelopersApiController::class, 'update']);
+
+    Route::delete('/developer/{id}', [DevelopersApiController::class, 'destroy']);
 });
 
 Route::group(['namespace' => 'Hire'], function() {
@@ -37,5 +39,5 @@ Route::group(['namespace' => 'Hire'], function() {
 
     Route::post('/hire', [HireApiController::class, 'create']);
 
-    Route::delete('/hire/delete/{hire}', [HireApiController::class, 'destroy']);
+    Route::delete('/hire/{id}', [HireApiController::class, 'destroy']);
 });

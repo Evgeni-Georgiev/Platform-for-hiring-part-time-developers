@@ -26,14 +26,15 @@ class HireFactory extends Factory
     {
         $developer_id = $this->faker->randomElement(Developer::all()->pluck('id')->toArray());
 //        $developer_names = Developer::all()->value('name');
-        $developer_names = $this->faker->randomElement(Developer::all()->pluck('name')->toArray());
+//        $developer_names = $this->faker->randomElement(Developer::all()->pluck('name')->toArray());
         $startingDate = fake()->dateTimeThisYear('+1 month');
-        $endingDate   = strtotime('+1 Week', $startingDate->getTimestamp());
+        $endingDate = strtotime('+1 Week', $startingDate->getTimestamp());
         return [
-            'developer_id' => Developer::factory(),
+            'developer_id' => $developer_id,
             'names' => fake()->name,
             'start_date' => $startingDate,
             'end_date' => $endingDate,
+            'user_hired_id' => fake()->numberBetween(1, 10)
         ];
     }
 }

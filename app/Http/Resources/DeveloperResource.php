@@ -16,6 +16,7 @@ class DeveloperResource extends JsonResource
     {
         // Resources Class - used to transform eloquent collection into format that we need
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,

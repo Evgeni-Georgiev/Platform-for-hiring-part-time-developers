@@ -6,12 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DeveloperRequest;
 use App\Models\Developer;
 use App\Models\Hire;
+use App\Services\Contracts\IDeveloperService;
 use App\Services\DeveloperService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class DevelopersController extends Controller
 {
+    private IDeveloperService $developerService;
+
+    public function __construct(IDeveloperService $developerService)
+    {
+        $this->developerService = $developerService;
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of al developers.
      *
@@ -19,7 +28,7 @@ class DevelopersController extends Controller
      */
     public function index(): View
     {
-        $developer = DeveloperService::getDeveloper();
+        $developer = $this->developerService->getDevelopers();
         return view('developers', compact('developer'));
     }
 
@@ -41,7 +50,7 @@ class DevelopersController extends Controller
      */
     public function store(DeveloperRequest $request): RedirectResponse
     {
-        DeveloperService::createDeveloper($request);
+        $this->developerService->createDeveloper($request);
         return redirect('/developers')->with('success', 'Developer is successfully saved');
     }
 
@@ -78,7 +87,7 @@ class DevelopersController extends Controller
      */
     public function update(DeveloperRequest $request, $id): RedirectResponse
     {
-        DeveloperService::updateDeveloper($request, $id);
+        $this->developerService->updateDeveloper($request, $id);
         return redirect('/developers')->with('success', 'Developer Data is successfully updated');
     }
 
@@ -90,7 +99,7 @@ class DevelopersController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        DeveloperService::deleteDeveloper($id);
+        $this->developerService->deleteDeveloper($id);
         return redirect('/developers')->with('success', 'Developer Data is successfully deleted');
     }
 }

@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function hires() {
+        return $this->hasMany(Hire::class); // A User can have many hires
+    }
 }

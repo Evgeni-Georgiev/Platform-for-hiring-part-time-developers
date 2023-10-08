@@ -19,6 +19,7 @@ class Hire extends Model
         'names',
         'start_date',
         'end_date',
+        'user_hired_id'
     ];
     protected $dates = [
         'start_date',
@@ -27,6 +28,9 @@ class Hire extends Model
 
     public function developer(){
         return $this->belongsTo(Developer::class);  // A Hire belongs to a Developer
+    }
+    public function user(){
+        return $this->belongsTo(User::class);  // A Hire belongs to a User
     }
 
 }

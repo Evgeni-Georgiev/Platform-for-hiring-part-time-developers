@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Developers\DevelopersController;
 use App\Http\Controllers\Hire\HireController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,3 +46,9 @@ Route::group(['namespace' => 'Hire'], function() {
     Route::get('/hire/delete/{id}', [HireController::class, 'destroy'])->name('hire.destroy');
     Route::delete('/hire/delete/{id}', [HireController::class, 'destroy'])->name('hire.destroy');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::view('/swagger', 'swaggerdocs');

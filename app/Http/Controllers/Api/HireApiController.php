@@ -3,15 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HireRequest;
+use App\Http\Requests\Api\HireApiRequest;
 use App\Http\Resources\HireResource;
-use App\Models\Developer;
 use App\Models\Hire;
-use App\Services\HireService;
+use App\Services\Contracts\IHireService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class HireApiController extends Controller
 {
+
+    private IHireService $hireService;
+
+    /**
+     * @param IHireService $hireService
+     */
+    public function __construct(IHireService $hireService)
+    {
+        $this->hireService = $hireService;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +33,7 @@ class HireApiController extends Controller
      */
     public function index()
     {
-        return HireResource::collection(HireService::getHire());
+        return HireResource::collection($this->hireService->getHire());
     }
 
     /**
@@ -27,42 +41,24 @@ class HireApiController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create(HireRequest $request, Hire $hire)
+    public function create(HireApiRequest $request)
     {
-        $hire_devs_by_names = Developer::where('name', $request->names)->get();
-//        $hire_devs_by_names = Hire::with('developer')->get();
-        $hire_dev = '';
-        foreach($hire_devs_by_names as $dev) {
-            $hire_dev = $hire->create([
-//                'developer_id' => $dev->developer->id,
-                'developer_id' => $dev->id,
-                'names' => request('names'),
-                'start_date' => request('start_date'),
-                'end_date' => request('end_date'),
-            ]);
+        $request->validated();
+        try {
+            $this->hireService->storeHire($request);
+            return response('', ResponseAlias::HTTP_CREATED);
+        } catch (ValidationException $ex) {
+            return response()->json([
+                'message' => 'Validation errors',
+                'errors' => $ex->errors()
+            ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
         }
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Developer for Hire created successfully',
-            'hired_developers' => $hire_dev,
-        ]);
     }
-
-//    /**
-//     * Store a newly created resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @return \Illuminate\Http\JsonResponse
-//     */
-//    public function store()
-//    {
-//
-//    }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Hire  $hire
+     * @param \App\Models\Hire $hire
      * @return \Illuminate\Http\Response
      */
     public function show(Hire $hire)
@@ -73,7 +69,7 @@ class HireApiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Hire  $hire
+     * @param \App\Models\Hire $hire
      * @return \Illuminate\Http\Response
      */
     public function edit(Hire $hire)
@@ -84,8 +80,8 @@ class HireApiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Hire  $hire
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Hire $hire
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Hire $hire)
@@ -96,16 +92,13 @@ class HireApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Hire  $hire
-     * @return array
+     * @param int $id
+     * @return Response
      */
-    public function destroy(Hire $hire)
+    public function destroy(int $id)
     {
-        $success_delete = $hire->delete();
+        $success_delete = $this->hireService->deleteHire($id);
 
-        return [
-            'success' => $success_delete,
-            'developer' => $success_delete
-        ];
+        return ($success_delete ? new Response('', ResponseAlias::HTTP_NO_CONTENT) : new Response('', ResponseAlias::HTTP_NOT_FOUND));
     }
 }

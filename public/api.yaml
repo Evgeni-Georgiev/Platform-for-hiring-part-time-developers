@@ -1,0 +1,311 @@
+openapi: 3.0.0
+info:
+  title: Hire a Developer API
+  description: This is a simple REST API example for University Project 'Hire a Developer'
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000/api/v1
+    description: local server
+
+security:
+  - basicAuth: [ ]
+
+paths:
+  /developer:
+    get:
+      tags:
+        - Developer
+      summary: Returns a list of all developers.
+      responses:
+        '200':
+          description: A JSON array of developers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Developer'
+        '401':
+          description: Unauthorized.
+    post:
+      tags:
+        - Developer
+      summary: Create a new developer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeveloperUpdate'
+            encoding:
+              profile_picture:
+                contentType: image/jpeg, image/png, image/svg, image/gif, image/jpg
+      responses:
+        '201':
+          description: Developer created successfully
+        '400':
+          description: Bad Request Body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized.
+  /developer/{id}:
+    put:
+      tags:
+        - Developer
+      summary: Update a developer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeveloperUpdate'
+            encoding:
+              profile_picture:
+                contentType: image/jpeg, image/png, image/svg, image/gif, image/jpg
+      responses:
+        '201':
+          description: Developer update successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+        '400':
+          description: Bad Request Body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Id of the developer to update
+    delete:
+      tags:
+        - Developer
+      summary: Deletes a developer
+      responses:
+        '404':
+          description: when developer with the specified id doesn't exist
+        '401':
+          description: Unauthorized.
+        '204':
+          description: when deletion is successful
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Id of the developer to delete
+    get:
+      tags:
+        - Developer
+      summary: Gets a developer by id
+      responses:
+        '404':
+          description: when developer with the specified id doesn't exist
+        '401':
+          description: Unauthorized.
+        '200':
+          description: when the developer is found in the db and returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Developer'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Id of the developer to get
+  /hire:
+    get:
+      tags:
+        - Hire
+      summary: Get all hired developers.
+      responses:
+        '200':
+          description: JSON Array of all hired developers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HireRead'
+        '401':
+          description: Unauthorized.
+    post:
+      tags:
+        - Hire
+      summary: Hire developer/s.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HireRequest'
+      responses:
+        '201':
+          description: Developer/s hired successfully
+        '400':
+          description: Bad Request Body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDto'
+        '401':
+          description: Unauthorized.
+        '422':
+          description: Hiring business logic error has occurred.
+  /hire/{id}:
+    delete:
+      tags:
+        - Hire
+      summary: Delete hire reservation by reservation id.
+      responses:
+        '204':
+          description: Record deleted successfully.
+        404:
+          description: Hire reservation record with the provided Id was not found.
+        '401':
+          description: Unauthorized.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Id of the hire record to delete
+
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Developer:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 5
+          maxLength: 255
+        email:
+          type: string
+        phone:
+          type: integer
+          minLength: 10
+          maxLength: 10
+        location:
+          type: string
+        profile_picture:
+          type: string
+        price_per_hour:
+          type: integer
+          minLength: 1
+          maxLength: 100
+        technology:
+          type: string
+        description:
+          type: string
+        years_of_experience:
+          type: integer
+        native_language:
+          type: string
+        linkedin_profile_link:
+          type: string
+      required:
+        - name
+        - email
+    DeveloperUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 5
+          maxLength: 255
+        email:
+          type: string
+        phone:
+          type: integer
+          minLength: 10
+          maxLength: 10
+        location:
+          type: string
+        price_per_hour:
+          type: integer
+          minLength: 1
+          maxLength: 100
+        technology:
+          type: string
+        description:
+          type: string
+        years_of_experience:
+          type: integer
+        native_language:
+          type: string
+        linkedin_profile_link:
+          type: string
+        profile_picture:
+          type: string
+          format: binary
+      required:
+        - name
+        - email
+
+    HireRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+      required:
+        - ids
+        - start_date
+        - end_date
+    HireRead:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        developer_id:
+          type: integer
+          format: int32
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+
+
+    ErrorDto:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          properties:
+            validation_errors_for_field:
+              type: array
+              items:
+                type: string
+
