@@ -1,20 +1,19 @@
 <?php
-namespace App\Services;
+namespace App\Services\Hire;
 
 use App\Http\Requests\DeveloperRequest;
 use App\Http\Requests\HireRequest;
 use App\Models\Developer;
 use App\Models\Hire;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
 
-class HireService{
-
+class HireServiceImpl implements HireService {
 
     /**
      * Return all exising developers.
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public static function getHire(): \Illuminate\Database\Eloquent\Collection
+    public function getHire(): Collection
     {
         return Hire::all();
     }
@@ -22,9 +21,9 @@ class HireService{
     /**
      * Hire existing developer(s) from a list without dates overlap
      * @param HireRequest $request - Obtain the client HTTP request.
-//     * @return void
      */
-    public static function storeHire(HireRequest $request) {
+    public function storeHire(HireRequest $request): void
+    {
         // Select all from developer where name = names from hire_developers
         $hire_devs_by_names = Developer::where('name', $request->names)->get();
 
@@ -76,7 +75,8 @@ class HireService{
      * @param $id - Accessing id route for determining which developer was updated.
      * @return void
      */
-    public static function deleteHire($id) {
+    public function deleteHire($id): void
+    {
         $delete_dev = Hire::findOrFail($id);
         $delete_dev->delete();
     }
@@ -87,12 +87,12 @@ class HireService{
      * @param $id - Accessing id route for determining which developer was updated.
      * @return void
      */
-    public static function updateHires(DeveloperRequest $request, $id) {
+    public function updateHires(DeveloperRequest $request, $id): void
+    {
         $hire = Hire::where('developer_id', $id)->get();
         foreach($hire as $single_hire) {
             $single_hire->names = $request->get('name', 'No Data');
             $single_hire->save();
         }
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\DevelopersApiController;
+use App\Http\Controllers\Api\DeveloperApiController;
 use App\Http\Controllers\Api\HireApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,13 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Developers'], function() {
 
-    Route::get('/', [DevelopersApiController::class, 'index']);
+    Route::get('/', [DeveloperApiController::class, 'index']);
 
-    Route::post('/developers', [DevelopersApiController::class, 'create']);
+    Route::post('/developers', [DeveloperApiController::class, 'create']);
 
-    Route::put('/developers/edit/{developer}', [DevelopersApiController::class, 'update']);
+    Route::put('/developers/edit/{developer}', [DeveloperApiController::class, 'update']);
 
-    Route::delete('/developers/delete/{developer}', [DevelopersApiController::class, 'destroy']);
+    Route::delete('/developers/delete/{developer}', [DeveloperApiController::class, 'destroy']);
 });
 
 Route::group(['namespace' => 'Hire'], function() {

@@ -11,7 +11,7 @@ class HireRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -48,7 +48,7 @@ class HireRequest extends FormRequest
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'names.required' => 'Choosing at least one developer is required!',

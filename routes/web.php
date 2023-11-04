@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Developers\DevelopersController;
+use App\Http\Controllers\Developer\DeveloperController;
 use App\Http\Controllers\Hire\HireController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DevelopersController::class, 'index'])->name('developers.show');
+Route::get('/', [DeveloperController::class, 'index'])->name('developers.show');
 
 
 //Route::get('/developers', function () {
@@ -23,18 +23,18 @@ Route::get('/', [DevelopersController::class, 'index'])->name('developers.show')
 //});
 
 Route::group(['namespace' => 'Developers'], function() {
-    Route::get('/developers', [DevelopersController::class, 'index'])->name('developers.show');
+    Route::get('/developers', [DeveloperController::class, 'index'])->name('developers.show');
 
-    Route::get('/developers/create', [DevelopersController::class, 'create'])->name('developers.create');
-    Route::post('/developers/create_dev', [DevelopersController::class, 'store'])->name('developers.store');
+    Route::get('/developers/create', [DeveloperController::class, 'create'])->name('developers.create');
+    Route::post('/developers/create_dev', [DeveloperController::class, 'store'])->name('developers.store');
 
-    Route::get('/developers/edit/{id}', [DevelopersController::class, 'edit'])->name('developers.edit');
-    Route::put('/developers/update/{id}', [DevelopersController::class, 'update'])->name('developers.update');
+    Route::get('/developers/edit/{id}', [DeveloperController::class, 'edit'])->name('developers.edit');
+    Route::put('/developers/update/{id}', [DeveloperController::class, 'update'])->name('developers.update');
 
-    Route::get('/developers/delete/{id}', [DevelopersController::class, 'destroy'])->name('developers.destroy');
-    Route::delete('/developers/delete/{id}', [DevelopersController::class, 'destroy'])->name('developers.destroy');
+    Route::get('/developers/delete/{id}', [DeveloperController::class, 'destroy'])->name('developers.destroy');
+    Route::delete('/developers/delete/{id}', [DeveloperController::class, 'destroy'])->name('developers.destroy');
 
-    Route::get('/developers/profile/{id}', [DevelopersController::class, 'developerProfile'])->name('hire.show');
+    Route::get('/developers/profile/{id}', [DeveloperController::class, 'developerProfile'])->name('hire.show');
 });
 
 

@@ -1,17 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Developers;
+namespace App\Http\Controllers\Developer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DeveloperRequest;
 use App\Models\Developer;
-use App\Models\Hire;
-use App\Services\DeveloperService;
+use App\Services\Developer\DeveloperService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
-class DevelopersController extends Controller
+class DeveloperController extends Controller
 {
+    private DeveloperService $developerService;
+
+    public function __construct(DeveloperService $developerService) {
+        $this->developerService = $developerService;
+    }
+
     /**
      * Display a listing of al developers.
      *
@@ -19,7 +24,7 @@ class DevelopersController extends Controller
      */
     public function index(): View
     {
-        $developer = DeveloperService::getDeveloper();
+        $developer = $this->developerService->getDeveloper();
         return view('developers', compact('developer'));
     }
 
@@ -41,7 +46,7 @@ class DevelopersController extends Controller
      */
     public function store(DeveloperRequest $request): RedirectResponse
     {
-        DeveloperService::createDeveloper($request);
+        $this->developerService->createDeveloper($request);
         return redirect('/developers')->with('success', 'Developer is successfully saved');
     }
 
@@ -66,7 +71,6 @@ class DevelopersController extends Controller
     {
         $developers = Developer::findOrFail($id);
         return view('edit', compact('developers'));
-
     }
 
     /**
@@ -78,7 +82,7 @@ class DevelopersController extends Controller
      */
     public function update(DeveloperRequest $request, $id): RedirectResponse
     {
-        DeveloperService::updateDeveloper($request, $id);
+        $this->developerService->updateDeveloper($request, $id);
         return redirect('/developers')->with('success', 'Developer Data is successfully updated');
     }
 
@@ -90,7 +94,7 @@ class DevelopersController extends Controller
      */
     public function destroy($id): RedirectResponse
     {
-        DeveloperService::deleteDeveloper($id);
+        $this->developerService->deleteDeveloper($id);
         return redirect('/developers')->with('success', 'Developer Data is successfully deleted');
     }
 }
